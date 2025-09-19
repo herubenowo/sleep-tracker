@@ -1,0 +1,10 @@
+development:
+  :concurrency: <%= ENV['SIDEKIQ_WORKER'] || 3 %>
+
+production:
+  :concurrency: <%= ENV['SIDEKIQ_WORKER'] || 5 %>
+
+:queues:
+  - [ 'default', 1 ]
+
+:max_retries: <%= ENV['SIDEKIQ_MAX_ATTEMPTS'] || 5 %>

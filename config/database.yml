@@ -1,0 +1,81 @@
+pgsql: &pgsql
+  adapter: postgresql_makara
+  encoding: unicode
+  pool: <%= ENV['DB_POOL'] || 5 %>
+  checkout_timeout: <%= ENV['DB_TIMEOUT'] || 5000 %>
+
+defaults: &defaults
+  <<: *<%= ENV['DB'] || "pgsql" %>
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV['DB_NAME'] %>
+  port: <%= ENV['DB_PORT'] || 5432 %>
+
+development:
+  <<: *defaults
+  makara:
+    id: postgresql
+    sticky: true
+    connections:
+      - role: master
+        host: <%= ENV['DB_HOST'] %>
+        username: <%= ENV['DB_USER'] %>
+        password: <%= ENV['DB_PASSWORD'] %>
+        database: <%= ENV['DB_NAME'] %>
+        port: <%= ENV['DB_PORT'] || 5432 %>
+        name: primary
+
+      - host: <%= ENV['DB_READ_HOST'] || ENV['DB_HOST']  %>
+        username: <%= ENV['DB_READ_USER'] || ENV['DB_USER'] %>
+        password: <%= ENV['DB_READ_PASSWORD'] || ENV['DB_PASSWORD']  %>
+        database: <%= ENV['DB_READ_NAME'] || ENV['DB_NAME']  %>
+        port: <%= ENV['DB_READ_PORT'] || ENV['DB_PORT']  || 5432 %>
+        name: replica
+        role: replica
+
+staging:
+  <<: *defaults
+  makara:
+    id: postgresql
+    sticky: true
+    connections:
+      - role: master
+        host: <%= ENV['DB_HOST'] %>
+        username: <%= ENV['DB_USER'] %>
+        password: <%= ENV['DB_PASSWORD'] %>
+        database: <%= ENV['DB_NAME'] %>
+        port: <%= ENV['DB_PORT'] || 5432 %>
+        name: primary
+
+      - host: <%= ENV['DB_READ_HOST'] || ENV['DB_HOST']  %>
+        username: <%= ENV['DB_READ_USER'] || ENV['DB_USER'] %>
+        password: <%= ENV['DB_READ_PASSWORD'] || ENV['DB_PASSWORD']  %>
+        database: <%= ENV['DB_READ_NAME'] || ENV['DB_NAME']  %>
+        port: <%= ENV['DB_READ_PORT'] || ENV['DB_PORT']  || 5432 %>
+        name: replica
+        role: replica
+
+production:
+  <<: *defaults
+  makara:
+    id: postgresql
+    blacklist_duration: <%= ENV['DB_BLACKLIST_DURATION'] || 0 %>
+    disable_blacklist: <%= ENV['DB_DISABLE_BLACKLIST'] || true %>
+    sticky: true
+    connections:
+      - role: master
+        host: <%= ENV['DB_HOST'] %>
+        username: <%= ENV['DB_USER'] %>
+        password: <%= ENV['DB_PASSWORD'] %>
+        database: <%= ENV['DB_NAME'] %>
+        port: <%= ENV['DB_PORT'] || 5432 %>
+        name: primary
+
+      - host: <%= ENV['DB_READ_HOST'] || ENV['DB_HOST']  %>
+        username: <%= ENV['DB_READ_USER'] || ENV['DB_USER'] %>
+        password: <%= ENV['DB_READ_PASSWORD'] || ENV['DB_PASSWORD']  %>
+        database: <%= ENV['DB_READ_NAME'] || ENV['DB_NAME']  %>
+        port: <%= ENV['DB_READ_PORT'] || ENV['DB_PORT']  || 5432 %>
+        name: replica
+        role: replica

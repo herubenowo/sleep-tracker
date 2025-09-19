@@ -1,0 +1,14 @@
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+Layout:
+  IndentationWidth: 4
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: false
+
+Layout/CaseIndentation:
+  EnforcedStyle: case
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: keyword

@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'environment'))
+
+if ENV["TELEGRAM_BOT_ENABLED"] == "true"
+  require_relative '../app/lib/telegram_bot.rb'
+  TelegramBot.new
+end
