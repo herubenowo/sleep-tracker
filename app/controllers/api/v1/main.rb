@@ -22,6 +22,8 @@ module Api
         unless success
           error!(response, status_code)
         end
+
+        env["CURRENT_USER"] = response
       end
 
       # Mounting Modules Api
