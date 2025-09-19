@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module FollowingsRepository
-  class FollowingList < ::FollowingsRepository::Base
+  class FollowerList < ::FollowingsRepository::Base
     def call
       begin
-        user = ::User.find_by_id(@params["follower_id"])
+        user = ::User.find_by_id(@params["following_id"])
         return [false, nil] unless user.present?
         page = @params["page"] || 1
         per_page = @params["per_page"] || 10
-        total = user.following.select(:id).count
-        data = user.following.order("user_followings.created_at #{(@params["order_direction"] || "desc").upcase}").page(page).per(per_page).select(:id, :username).map do |u|
+        total = user.followers.select(:id).count
+        data = user.followers.order("user_followings.created_at #{(@params["order_direction"] || "desc").upcase}").page(page).per(per_page).select(:id, :username).map do |u|
           {
             "id" => u.id,
             "username" => u.username
@@ -24,7 +24,7 @@ module FollowingsRepository
           }
         ]
       rescue StandardError => e
-        Rails.logger.info "::FollowingsRepository::FollowingList ERROR: #{e.message}"
+        Rails.logger.info "::FollowingsRepository::FollowerList ERROR: #{e.message}"
         [false, "Something went wrong"]
       end
     end
