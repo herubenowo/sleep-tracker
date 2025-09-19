@@ -31,6 +31,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_19_165743) do
     t.string "password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "idx_users_created_at"
+    t.index ["username", "created_at"], name: "idx_users_username_created_at"
     t.index ["username", "password"], name: "idx_users_username_password"
     t.index ["username"], name: "index_users_on_username", unique: true
   end

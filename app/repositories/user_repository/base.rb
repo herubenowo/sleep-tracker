@@ -8,5 +8,15 @@ module UserRepository
       @model = ::User
       @params = params
     end
+
+    def handle_meta(page, per_page, total)
+      {
+        "pagination" => {
+          "page" => page,
+          "per_page" => per_page,
+          "total" => total
+        }
+      }
+    end
   end
 end

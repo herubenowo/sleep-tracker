@@ -62,5 +62,22 @@ class ::Api::V1::Users::Resources::Users < Grape::API
       env["api.response.message"] = "Success follow user"
       present true
     end
+
+    desc "Get List All User with Filter"
+    params do
+      optional :search_filter, type: String, desc: "Filter string"
+      optional :page, type: Integer, desc: "Page Number"
+      optional :per_page, type: Integer, desc: "Per Page"
+      optional :order_direction, type: String, values: %w[asc desc], default: "desc", desc: "Order Direction by created_at"
+    end
+    get "/" do
+      success, response, status_code = ::UserRepository::ListAll.get(declared(params))
+      unless success
+        error!(response, status_code)
+      end
+
+      present :users, response["data"], with: Grape::Presenters::Presenter
+      present :meta, response["meta"], with: Grape::Presenters::Presenter
+    end
   end
 end
