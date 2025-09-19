@@ -48,5 +48,19 @@ class ::Api::V1::Users::Resources::Users < Grape::API
       present :followers, response["data"], with: Grape::Presenters::Presenter
       present :meta, response["meta"], with: Grape::Presenters::Presenter
     end
+
+    desc "Current User Follow Others"
+    params do
+      requires :following_id, type: Integer, desc: "User id to follow by current user"
+    end
+    post "/me/follow" do
+      success, response, status_code = ::UserService::FollowUser.call(env["CURRENT_USER"].id, declared(params))
+      unless success
+        error!(response, status_code)
+      end
+
+      env["api.response.message"] = "Success follow user"
+      present true
+    end
   end
 end
