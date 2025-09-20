@@ -1,4 +1,5 @@
 class SleepSummary < ApplicationRecord
+  belongs_to :user, class_name: "User"
   after_create :set_default
 
   def set_default

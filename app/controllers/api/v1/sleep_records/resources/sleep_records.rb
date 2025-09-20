@@ -23,5 +23,23 @@ class ::Api::V1::SleepRecords::Resources::SleepRecords < Grape::API
       env["api.response.message"] = "Success clock out, have a nice day!"
       present true
     end
+
+    namespace "summary" do
+      params do
+        optional :page, type: Integer, desc: "Page Number"
+        optional :per_page, type: Integer, desc: "Per Page"
+        optional :start_date, type: Date
+        optional :end_date, type: Date
+      end
+      get "/me" do
+        success, response, status_code = ::SleepSummaryService::CurrentUser.call(env["CURRENT_USER"].id, params)
+        unless success
+          error!(response, status_code)
+        end
+
+        present :summary, response["data"], with: Grape::Presenters::Presenter
+        present :meta, response["meta"], with: Grape::Presenters::Presenter
+      end
+    end
   end
 end

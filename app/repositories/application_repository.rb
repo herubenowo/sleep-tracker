@@ -1,5 +1,18 @@
 class ApplicationRepository
-  def self.call(*args, &block)
-    new(*args, &block).call
+  def initialize(params)
+    raise "params is invalid" if params.class != Hash && params.class != Hashie::Mash
+
+    @params = params
+    @model = nil
+  end
+
+  def handle_meta(page, per_page, total)
+    {
+      "pagination" => {
+        "page" => page,
+        "per_page" => per_page,
+        "total" => total
+      }
+    }
   end
 end
