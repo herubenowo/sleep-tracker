@@ -146,3 +146,5 @@ gem "lograge"
 gem 'i18n'
 gem 'hiredis'
 gem "hiredis-client"
+
+gem "faker"
