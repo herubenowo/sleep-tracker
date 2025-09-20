@@ -32,7 +32,23 @@ class ::Api::V1::SleepRecords::Resources::SleepRecords < Grape::API
         optional :end_date, type: Date
       end
       get "/me" do
-        success, response, status_code = ::SleepSummaryService::CurrentUser.call(env["CURRENT_USER"].id, params)
+        success, response, status_code = ::SleepSummaryService::CurrentUser.call(env["CURRENT_USER"].id, declared(params))
+        unless success
+          error!(response, status_code)
+        end
+
+        present :summary, response["data"], with: Grape::Presenters::Presenter
+        present :meta, response["meta"], with: Grape::Presenters::Presenter
+      end
+
+      params do
+        optional :page, type: Integer, desc: "Page Number"
+        optional :per_page, type: Integer, desc: "Per Page"
+        optional :start_date, type: Date
+        optional :end_date, type: Date
+      end
+      get "/following" do
+        success, response, status_code = ::SleepSummaryService::CurrentUserFollowing.call(env["CURRENT_USER"].id, declared(params))
         unless success
           error!(response, status_code)
         end
