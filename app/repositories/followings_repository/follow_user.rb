@@ -4,11 +4,11 @@ module FollowingsRepository
   class FollowUser < ::FollowingsRepository::Base
     def call
       begin
-        if ::UserFollowing.find_by(follower_id: @params["current_user_id"], following_id: @params["following_id"]).present?
+        if @model.find_by(follower_id: @params["current_user_id"], following_id: @params["following_id"]).present?
           return [false, "You are already following this user.", 409]
         end
 
-        ::UserFollowing.create!(
+        @model.create!(
           follower_id: @params["current_user_id"],
           following_id: @params["following_id"]
         )

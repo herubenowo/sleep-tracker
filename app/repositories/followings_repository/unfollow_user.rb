@@ -4,7 +4,7 @@ module FollowingsRepository
   class UnfollowUser < ::FollowingsRepository::Base
     def call
       begin
-        following = ::UserFollowing.find_by(follower_id: @params["current_user_id"], following_id: @params["following_id"])
+        following = @model.find_by(follower_id: @params["current_user_id"], following_id: @params["following_id"])
         unless following.present?
           return [false, "You are not following this user.", 409]
         end

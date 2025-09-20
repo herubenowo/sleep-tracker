@@ -10,7 +10,7 @@ module SleepRecordRepository
             already_clocked_in = true
           end
         else
-          if ::SleepRecord.where(user_id: @params["current_user_id"], ended_at: nil).present?
+          if @model.where(user_id: @params["current_user_id"], ended_at: nil).present?
             already_clocked_in = true
           end
         end
@@ -20,7 +20,7 @@ module SleepRecordRepository
         end
 
         ActiveRecord::Base.transaction do
-          SleepRecord.create(
+          @model.create(
             user_id: @params["current_user_id"],
             started_at: Time.now,
           )
