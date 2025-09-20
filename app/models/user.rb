@@ -7,6 +7,9 @@ class User < ApplicationRecord
   has_many :passive_follows, class_name: "UserFollowing", foreign_key: "following_id", dependent: :destroy
   has_many :followers, through: :passive_follows, source: :follower
 
+  has_many :sleep_records
+  has_many :sleep_summaries
+
   def followings_user_id
     data = nil
     if $redis.present?
