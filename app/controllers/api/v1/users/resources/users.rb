@@ -63,6 +63,20 @@ class ::Api::V1::Users::Resources::Users < Grape::API
       present true
     end
 
+    desc "Current User Unfollow Others"
+    params do
+      requires :following_id, type: Integer, desc: "User id to unfollow by current user"
+    end
+    delete "/me/unfollow" do
+      success, response, status_code = ::UserService::UnfollowUser.call(env["CURRENT_USER"].id, declared(params))
+      unless success
+        error!(response, status_code)
+      end
+
+      env["api.response.message"] = "Success unfollow user"
+      present :user, nil
+    end
+
     desc "Get List All User with Filter"
     params do
       optional :search_filter, type: String, desc: "Filter string"
