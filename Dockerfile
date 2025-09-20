@@ -20,9 +20,7 @@ RUN apt-get update -qq && \
   libmagick++-dev \
   libjemalloc2 \
   libpq-dev \
-  librdkafka++1 \
-  librdkafka1 \
-  librdkafka-dev \
+  libyaml-dev \
   dumb-init && \
   rm -rf /var/lib/apt/lists /var/cache/apt/archives
 

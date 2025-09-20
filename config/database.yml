@@ -1,81 +1,42 @@
-pgsql: &pgsql
-  adapter: postgresql_makara
+default: &default
+  adapter: postgresql
   encoding: unicode
-  pool: <%= ENV['DB_POOL'] || 5 %>
-  checkout_timeout: <%= ENV['DB_TIMEOUT'] || 5000 %>
-
-defaults: &defaults
-  <<: *<%= ENV['DB'] || "pgsql" %>
-  host: <%= ENV['DB_HOST'] %>
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
-  database: <%= ENV['DB_NAME'] %>
-  port: <%= ENV['DB_PORT'] || 5432 %>
+  pool: <%= ENV.fetch("DB_POOL") { 10 } %>
+  timeout: <%= ENV.fetch("DB_TIMEOUT") { 20000 } %>
 
 development:
-  <<: *defaults
-  makara:
-    id: postgresql
-    sticky: true
-    connections:
-      - role: master
-        host: <%= ENV['DB_HOST'] %>
-        username: <%= ENV['DB_USER'] %>
-        password: <%= ENV['DB_PASSWORD'] %>
-        database: <%= ENV['DB_NAME'] %>
-        port: <%= ENV['DB_PORT'] || 5432 %>
-        name: primary
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME") { "sleep_tracker_development" } %>
+  username: <%= ENV.fetch("DB_USER") { "postgres" } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("DB_PORT") { 5432 } %>
 
-      - host: <%= ENV['DB_READ_HOST'] || ENV['DB_HOST']  %>
-        username: <%= ENV['DB_READ_USER'] || ENV['DB_USER'] %>
-        password: <%= ENV['DB_READ_PASSWORD'] || ENV['DB_PASSWORD']  %>
-        database: <%= ENV['DB_READ_NAME'] || ENV['DB_NAME']  %>
-        port: <%= ENV['DB_READ_PORT'] || ENV['DB_PORT']  || 5432 %>
-        name: replica
-        role: replica
-
-staging:
-  <<: *defaults
-  makara:
-    id: postgresql
-    sticky: true
-    connections:
-      - role: master
-        host: <%= ENV['DB_HOST'] %>
-        username: <%= ENV['DB_USER'] %>
-        password: <%= ENV['DB_PASSWORD'] %>
-        database: <%= ENV['DB_NAME'] %>
-        port: <%= ENV['DB_PORT'] || 5432 %>
-        name: primary
-
-      - host: <%= ENV['DB_READ_HOST'] || ENV['DB_HOST']  %>
-        username: <%= ENV['DB_READ_USER'] || ENV['DB_USER'] %>
-        password: <%= ENV['DB_READ_PASSWORD'] || ENV['DB_PASSWORD']  %>
-        database: <%= ENV['DB_READ_NAME'] || ENV['DB_NAME']  %>
-        port: <%= ENV['DB_READ_PORT'] || ENV['DB_PORT']  || 5432 %>
-        name: replica
-        role: replica
+test:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME") { "sleep_tracker_test" } %>
+  username: <%= ENV.fetch("DB_USER") { "postgres" } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("DB_PORT") { 5432 } %>
 
 production:
-  <<: *defaults
+  adapter: postgresql_makara
+  encoding: unicode
+  pool: <%= ENV.fetch("DB_POOL") { 10 } %>
+  timeout: <%= ENV.fetch("DB_TIMEOUT") { 20000 } %>
+  username: <%= ENV["DB_USER"] %>
+  password: <%= ENV["DB_PASSWORD"] %>
+  database: <%= ENV["DB_NAME"] %>
   makara:
-    id: postgresql
-    blacklist_duration: <%= ENV['DB_BLACKLIST_DURATION'] || 0 %>
-    disable_blacklist: <%= ENV['DB_DISABLE_BLACKLIST'] || true %>
+    id: postgres_cluster
     sticky: true
     connections:
       - role: master
-        host: <%= ENV['DB_HOST'] %>
-        username: <%= ENV['DB_USER'] %>
-        password: <%= ENV['DB_PASSWORD'] %>
-        database: <%= ENV['DB_NAME'] %>
-        port: <%= ENV['DB_PORT'] || 5432 %>
+        host: <%= ENV.fetch("DB_HOST") { "db" } %>
+        port: <%= ENV.fetch("DB_PORT") { 5432 } %>
         name: primary
-
-      - host: <%= ENV['DB_READ_HOST'] || ENV['DB_HOST']  %>
-        username: <%= ENV['DB_READ_USER'] || ENV['DB_USER'] %>
-        password: <%= ENV['DB_READ_PASSWORD'] || ENV['DB_PASSWORD']  %>
-        database: <%= ENV['DB_READ_NAME'] || ENV['DB_NAME']  %>
-        port: <%= ENV['DB_READ_PORT'] || ENV['DB_PORT']  || 5432 %>
+      - role: slave
+        host: <%= ENV.fetch("DB_REPLICA_HOST") { "db" } %>
+        port: <%= ENV.fetch("DB_PORT") { 5432 } %>
         name: replica
-        role: replica
