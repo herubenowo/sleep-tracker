@@ -13,6 +13,10 @@ module FollowingsRepository
           following_id: @params["following_id"]
         )
 
+        if $redis.present?
+          ::User.find_by_id(@params["current_user_id"]).try(:reset_followings_user_id)
+        end
+
         [true, nil, 201]
       rescue StandardError => e
         Rails.logger.info "::FollowingsRepository::FollowUser ERROR: #{e.message}"
