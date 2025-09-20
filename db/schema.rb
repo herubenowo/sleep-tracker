@@ -21,6 +21,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_20_050833) do
     t.integer "duration_minutes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "ended_at"], name: "idx_sleep_records_user_id_ended_at"
+    t.index ["user_id"], name: "idx_sleep_records_user_id_ended_at_null", unique: true, where: "(ended_at IS NULL)"
     t.index ["user_id"], name: "index_sleep_records_on_user_id"
   end
 

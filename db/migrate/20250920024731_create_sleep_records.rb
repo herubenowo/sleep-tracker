@@ -9,7 +9,7 @@ class CreateSleepRecords < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_index :sleep_records, [:user_id, :ended_at], name: "idx_sleep_records_user_id_ended_at_null"
-    add_index :sleep_records, :user_id, unique: true, where: "ended_at IS NULL"
+    add_index :sleep_records, [:user_id, :ended_at], name: "idx_sleep_records_user_id_ended_at"
+    add_index :sleep_records, :user_id, unique: true, where: "ended_at IS NULL",  name: "idx_sleep_records_user_id_ended_at_null"
   end
 end
