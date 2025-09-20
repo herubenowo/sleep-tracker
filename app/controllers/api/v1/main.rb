@@ -29,6 +29,7 @@ module Api
       # Mounting Modules Api
       mount ::Api::V1::Check::Routes
       mount ::Api::V1::Users::Routes
+      mount ::Api::V1::SleepRecords::Routes
 
       # Swagger config
       add_swagger_documentation(

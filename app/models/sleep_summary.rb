@@ -1,0 +1,2 @@
+class SleepSummary < ApplicationRecord
+end
