@@ -16,7 +16,7 @@ module SleepRecordRepository
         end
 
         if already_clocked_in
-          return [false, "Already clocked in.", 409]
+          return [true, clocked_in_data, 201]
         end
 
         ActiveRecord::Base.transaction do
