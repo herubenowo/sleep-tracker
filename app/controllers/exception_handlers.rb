@@ -25,6 +25,9 @@ module ExceptionHandlers
         elsif e.class.name == "ActiveRecord::RecordInvalid"
           code = 422
           message = [e.try(:message)]
+        elsif e.class.name == "Grape::Exceptions::MethodNotAllowed"
+          code = 405
+          message = ["405 Not Allowed"]
         else
           code = 500
           message = e.to_s
@@ -46,6 +49,7 @@ module ExceptionHandlers
 
         results = {
           error: {
+
             code: code,
             errors: unmask_error_message ? message : masking_error_message
           }
