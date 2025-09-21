@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   end
 
   def index
-    render json: { message: "Welcome to #{ENV.fetch("APP_NAME", "ruby-boilerplate")}" }, status: 200
+    render json: { message: "Welcome to #{ENV.fetch("APP_NAME", "sleep-tracker-be")}" }, status: 200
   end
 
   def catch_404

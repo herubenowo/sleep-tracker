@@ -8,7 +8,7 @@ puts "Seeding data..."
 
 # ====== USERS ======
 puts "Creating users..."
-user_count = 50000
+user_count = 1000
 users = []
 
 user_count.times do |i|
