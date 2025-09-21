@@ -29,7 +29,7 @@ module SleepRecordRepository
             $redis.set("sleep_records_active:#{@params["current_user_id"]}", "1")
           end
         end
-        [true, nil, 201]
+        [true, clocked_in_data, 201]
       rescue StandardError => e
         Rails.logger.info "SleepRecordRepository::ClockIn ERROR: #{e.message}"
         [false, "Something went wrong", 500]
@@ -38,6 +38,17 @@ module SleepRecordRepository
 
     def self.call(params)
       new(params).call
+    end
+
+    private
+    def clocked_in_data
+      @model.where(user_id: @params["current_user_id"]).order(created_at: :desc).map do |row|
+        {
+          "clocked_in_time" => row["started_at"],
+          "clocked_out_time" => row["ended_at"],
+          "sleep_duration_minutes" => row["duration_minutes"]
+        }
+      end
     end
   end
 end

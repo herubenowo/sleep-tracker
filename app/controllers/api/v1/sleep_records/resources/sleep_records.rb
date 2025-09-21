@@ -10,7 +10,7 @@ class ::Api::V1::SleepRecords::Resources::SleepRecords < Grape::API
       end
 
       env["api.response.message"] = "Success clock in, have a nice sleep!"
-      present true
+      present :sleep_records, response, with: Grape::Presenters::Presenter
     end
 
     desc "Current User Clock-Out"
