@@ -37,6 +37,7 @@ class ::Api::V1::SleepRecords::Resources::SleepRecords < Grape::API
           error!(response, status_code)
         end
 
+        status 200
         present :summary, response["data"], with: Grape::Presenters::Presenter
         present :meta, response["meta"], with: Grape::Presenters::Presenter
       end
@@ -53,6 +54,7 @@ class ::Api::V1::SleepRecords::Resources::SleepRecords < Grape::API
           error!(response, status_code)
         end
 
+        status 200
         present :summary, response["data"], with: Grape::Presenters::Presenter
         present :meta, response["meta"], with: Grape::Presenters::Presenter
       end

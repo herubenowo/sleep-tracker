@@ -29,6 +29,7 @@ class ::Api::V1::Users::Resources::Users < Grape::API
         error!(response, status_code)
       end
 
+      status 200
       present :followings, response["data"], with: Grape::Presenters::Presenter
       present :meta, response["meta"], with: Grape::Presenters::Presenter
     end
@@ -45,6 +46,7 @@ class ::Api::V1::Users::Resources::Users < Grape::API
         error!(response, status_code)
       end
 
+      status 200
       present :followers, response["data"], with: Grape::Presenters::Presenter
       present :meta, response["meta"], with: Grape::Presenters::Presenter
     end
@@ -90,6 +92,7 @@ class ::Api::V1::Users::Resources::Users < Grape::API
         error!(response, status_code)
       end
 
+      status 200
       present :users, response["data"], with: Grape::Presenters::Presenter
       present :meta, response["meta"], with: Grape::Presenters::Presenter
     end
