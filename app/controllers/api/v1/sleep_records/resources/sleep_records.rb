@@ -31,7 +31,7 @@ class ::Api::V1::SleepRecords::Resources::SleepRecords < Grape::API
         optional :start_date, type: Date
         optional :end_date, type: Date
       end
-      get "/me" do
+      post "/me" do
         success, response, status_code = ::SleepSummaryService::CurrentUser.call(env["CURRENT_USER"].id, declared(params))
         unless success
           error!(response, status_code)
@@ -47,7 +47,7 @@ class ::Api::V1::SleepRecords::Resources::SleepRecords < Grape::API
         optional :start_date, type: Date
         optional :end_date, type: Date
       end
-      get "/following" do
+      post "/following" do
         success, response, status_code = ::SleepSummaryService::CurrentUserFollowing.call(env["CURRENT_USER"].id, declared(params))
         unless success
           error!(response, status_code)

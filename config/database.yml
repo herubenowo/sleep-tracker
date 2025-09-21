@@ -6,7 +6,7 @@ default: &default
 
 development:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") { "sleep_tracker_development" } %>
+  database: <%= ENV.fetch("DB_NAME") { "sleep_tracker" } %>
   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
@@ -14,7 +14,7 @@ development:
 
 test:
   <<: *default
-  database: <%= ENV.fetch("DB_NAME") { "sleep_tracker_test" } %>
+  database: <%= ENV.fetch("DB_NAME") { "sleep_tracker" } %>_test
   username: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
   host: <%= ENV.fetch("DB_HOST") { "localhost" } %>

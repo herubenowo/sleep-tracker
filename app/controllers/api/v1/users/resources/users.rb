@@ -23,7 +23,7 @@ class ::Api::V1::Users::Resources::Users < Grape::API
       optional :per_page, type: Integer, desc: "Per Page"
       optional :order_direction, type: String, values: %w[asc desc], default: "desc", desc: "Order Direction by created_at"
     end
-    get "/me/following-list" do
+    post "/me/following-list" do
       success, response, status_code = ::UserService::FollowingList.get(env["CURRENT_USER"].id, declared(params))
       unless success
         error!(response, status_code)
@@ -39,7 +39,7 @@ class ::Api::V1::Users::Resources::Users < Grape::API
       optional :per_page, type: Integer, desc: "Per Page"
       optional :order_direction, type: String, values: %w[asc desc], default: "desc", desc: "Order Direction by created_at"
     end
-    get "/me/follower-list" do
+    post "/me/follower-list" do
       success, response, status_code = ::UserService::FollowerList.get(env["CURRENT_USER"].id, declared(params))
       unless success
         error!(response, status_code)
@@ -77,14 +77,14 @@ class ::Api::V1::Users::Resources::Users < Grape::API
       present :user, nil
     end
 
-    desc "Get List All User with Filter"
+    desc "List All User with Filter"
     params do
       optional :search_filter, type: String, desc: "Filter string"
       optional :page, type: Integer, desc: "Page Number"
       optional :per_page, type: Integer, desc: "Per Page"
       optional :order_direction, type: String, values: %w[asc desc], default: "desc", desc: "Order Direction by created_at"
     end
-    get "/" do
+    post "/list-all" do
       success, response, status_code = ::UserRepository::ListAll.get(declared(params))
       unless success
         error!(response, status_code)
